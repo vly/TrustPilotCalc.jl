@@ -3,6 +3,10 @@ uuid = "64a7c805-51c3-461c-bbc0-80a265aaf057"
 authors = ["Val Lyashov <val@plstr.com>"]
 version = "0.1.0"
 
+[deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+JuliaDB = "a93385a2-3734-596a-9a66-3cfbb77141e6"
+
 [compat]
 julia = "1"
 
