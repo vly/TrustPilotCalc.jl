@@ -46,6 +46,15 @@ function getReviewWeightStatic(reviewed_at::DateTime, last_reviewed_at::DateTime
 end
 
 """
+  show(result)
+
+print values of result
+"""
+function show(result::TPScore)
+    printstyled(result.score, " | ", result.stars, " | ", result.date, "\n", color = :blue)
+end
+
+"""
   getReviewWeightHL(review_date, last_review_date)
 
 exponential decay (half-life) variant of the `getReviewWeight` function
