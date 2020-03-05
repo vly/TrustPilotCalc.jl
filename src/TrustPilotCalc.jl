@@ -96,26 +96,26 @@ function scoreToStars(score::Float64)
 end
 
 """
-  loadReviews(csv_file)
-
-imports a TrustPilot reviews export.
-"""
-function loadReviews(filename)
-    reviews = loadtable(filename; output = "data_swap", type_detect_rows = 500)
-end
-
-"""
   playBack(csv_file)
 
 imports a TrustPilot reviews CSV export and calculates a TrustPilot score.
 """
-function playBack(filename)
-    raw_data = loadReviews(filename)
-    working_data = select(working_data, (:review_author_id, :review_created_at_utc, :review_star))
+function playBack(filename::String; max_yearmon = round(Dates.now(), Dates.Month), schema = (:review_author_id, :review_created_at_utc, :review_star))
+    raw_data = loadtable(filename; type_detect_rows = 500)
+    working_data = select(raw_data, schema)
+    working_data = filter(x -> x.review_created_at_utc < max_yearmon, working_data)
     sort!(working_data, :review_created_at_utc)
     all_reviews = map(x -> TPReview(x.review_author_id, x.review_star, x.review_created_at_utc), working_data)
-    results = getTrustScore(all_reviews)
-    return results
+    return getTrustScore(all_reviews)
+end
+
+function playBack(dataset::IndexedTable; max_yearmon = round(Dates.now(), Dates.Month), schema = (:review_author_id, :review_created_at_utc, :review_star))
+    raw_data = dataset
+    working_data = select(raw_data, schema)
+    working_data = filter(x -> x.review_created_at_utc < max_yearmon, working_data)
+    sort!(working_data, :review_created_at_utc)
+    all_reviews = map(x -> TPReview(x.review_author_id, x.review_star, x.review_created_at_utc), working_data)
+    return getTrustScore(all_reviews)
 end
 
 end # module
