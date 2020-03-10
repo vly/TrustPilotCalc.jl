@@ -34,7 +34,7 @@ end
 
 With a TrustPilot business account you can export all your reviews as a flat csv file.
 
-Alternatively, here is an example script to generate a quick dataset from a TrustPilot reviews page.
+Alternatively, here is an example Javascript function to generate a quick dataset from a TrustPilot reviews page. Just run it in your browser console.
 
 ```javascript
 (function(){
@@ -77,7 +77,7 @@ function process_review(review) {
 function to_flatformat(review_objs) {
   keys = Object.keys(review_objs[0]);
   rows = Array.prototype.map.call(review_objs, function(obj){return Object.values(obj)});
-  blob = Array.prototype.concat([header], rows);
+  blob = Array.prototype.concat([keys], rows);
   return Array.prototype.map.call(blob, function(line){return line.join("','");}).join("'\n'")
 };
 
